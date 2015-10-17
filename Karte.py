@@ -62,16 +62,16 @@ class Karte:
         if feld.x < len(self.felder) and feld.x > -1 and feld.y < len(self.felder[1]) and feld.y > -1:
             return True
 
-    def gib_feld_naeher_nest(self,feld):
-        felder_naeher_nest=[]
+    def gib_feld_naeher_nest(self, feld):
+        felder_naeher_nest = []
         if feld.x != self.nest.x:
             if feld.x > self.nest.x:
-                felder_naeher_nest.append(self.felder[feld.x-1][feld.y])
+                felder_naeher_nest.append(self.felder[feld.x - 1][feld.y])
             if feld.x < self.nest.x:
-                felder_naeher_nest.append(self.felder[feld.x+1][feld.y])
+                felder_naeher_nest.append(self.felder[feld.x + 1][feld.y])
         if feld.y != self.nest.y:
             if feld.y > self.nest.y:
-                felder_naeher_nest.append(self.felder[feld.x][feld.y-1])
+                felder_naeher_nest.append(self.felder[feld.x][feld.y - 1])
             if feld.x < self.nest.y:
-                felder_naeher_nest.append(self.felder[feld.x][feld.y+1])
+                felder_naeher_nest.append(self.felder[feld.x][feld.y + 1])
         return felder_naeher_nest

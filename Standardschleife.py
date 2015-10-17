@@ -26,13 +26,13 @@ def bewege(spielfeld, ameisen):
                     pheromon_felder.append(moegliches_feld)
                 elif moegliches_feld.pheromone == pheromon_felder[0].pheromone:
                     pheromon_felder.append(moegliches_feld)
-            pheromon_felder_weg_nest=[]
-            moegliche_pheromonfelder= pheromon_felder
+            pheromon_felder_weg_nest = []
+            moegliche_pheromonfelder = pheromon_felder
             for pheromon_feld in moegliche_pheromon_felder:
                 if pheromon_feld in felder_zu_nest:
                     moeglichepheromon_felder.remove(pheromon_feld)
-            if len(moegliche_pheromonfelder)==0:
-                moegliche_pheromonfelder= pheromon_felder
+            if len(moegliche_pheromonfelder) == 0:
+                moegliche_pheromonfelder = pheromon_felder
             ameise.feld = rd.random(moeglichepheromon_felder)
             if type(ameise.feld) is Karte.Futterquelle:
                 if ameise.feld.futter > 0:
@@ -40,12 +40,12 @@ def bewege(spielfeld, ameisen):
                     ameise.feld.futter -= 1
         elif ameise.futter is True:
             moegliche_felder = felder_zu_nest
-            ameise.feld= rd.random(moegliche_felder)
+            ameise.feld = rd.random(moegliche_felder)
             if typeameise.feld is spielfeld.nest:
                 ameise.futter = False
-                spielfeld.nest.gesammeltes_futter+=1
+                spielfeld.nest.gesammeltes_futter += 1
         if ameise.futter is True:
-            ameise.feld.pheromone+=1
+            ameise.feld.pheromone += 1
 
 
 def ameisen_erstellen(startpunkt, ameisenliste):
