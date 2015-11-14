@@ -1,17 +1,18 @@
-__author__ = 'Leo'
+#Modulimport
 import random as rd
 
-
+#die Feld-Klasse ein normales Feld in der Karte
 class Feld:
     def __init__(self, x, y):
-        self.pheromone = 0
-        self.x = x
+        self.pheromone = 0#die pheromone, denen die Ameisen nachlaufen
+        self.x = x#die x und y koordinate des feldes im spielfeld
         self.y = y
 
-
+#die Futterquellen-Klasse hier können die Ameisen Futter aufnehemen
 class Futterquelle:
     def __init__(self, x, y):
         self.futter = 50
+        self.pheromone = 0
         self.x = x
         self.y = y
 
@@ -21,11 +22,13 @@ class Nest:
         self.gesammeltes_futter = 0
         self.x = x
         self.y = y
+        self.pheromone=0
 
 
 class Karte:
-    def __init__(self):
-        self.felder = self.felder_erstellen(500, 500, 5)
+    def __init__(self,nestposition_x,nestposition_y,futterquellen_anzahl):
+        self.nest=Nest(nestposition_x,nestposition_y)
+        self.felder = self.felder_erstellen(500, 500, futterquellen_anzahl)
 
     def felder_erstellen(self, begrenzung_x, begrenzung_y, futterquellen_anzahl):
         felder = []
@@ -34,17 +37,15 @@ class Karte:
             for y in range(0, begrenzung_y):
                 felder_spalte.append(Feld(x, y))
             felder.append(felder_spalte)
-        mitte_x = int(begrenzung_x * 0.5)
-        mitte_y = int(begrenzung_y * 0.5)
         for futterquelle in range(0, futterquellen_anzahl):
             zufaellig_x = rd.randint(0, begrenzung_x)
             zufaellig_y = rd.randint(0, begrenzung_y)
-            while zufaellig_x == mitte_x and zufaellig_y == mitte_y and type(
+            while zufaellig_x == self.nest.x and zufaellig_y == self.nest.y and type(
                     felder[zufaellig_x][zufaellig_y]) is Futterquelle:
                 zufaellig_x = rd.randint(0, begrenzung_x)
                 zufaellig_y = rd.randint(0, begrenzung_y)
             felder[zufaellig_x][zufaellig_y] = Futterquelle(zufaellig_x, zufaellig_y)
-        self.nest = Nest(mitte_x, mitte_y)
+
         felder[self.nest.x][self.nest.y] = self.nest
         return felder
 
