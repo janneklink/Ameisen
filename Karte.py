@@ -62,14 +62,14 @@ class Karte:
 
         # Jetzt werden bereits bestehende felder durch Futterquellen ersetzt
         for futterquelle in range(0, futterquellen_anzahl):
-            zufaellig_x = rd.randint(0, begrenzung_x)  # hier werden zufällige positionen innerhalb der Karte ausgewählt
-            zufaellig_y = rd.randint(0, begrenzung_y)
+            zufaellig_x = rd.randint(0, begrenzung_x-1)  # hier werden zufällige positionen innerhalb der Karte ausgewählt
+            zufaellig_y = rd.randint(0, begrenzung_y-1)
             farbe_futterquelle="red"
             while zufaellig_x == self.nest.x and zufaellig_y == self.nest.y and type(
                     # dies ist notwendig damit die Futterquelle nich auf eine bereits bestehende Futterquelle oder das Nest platziert wird
                     felder[zufaellig_x][zufaellig_y]) is Futterquelle:
-                zufaellig_x = rd.randint(0, begrenzung_x)
-                zufaellig_y = rd.randint(0, begrenzung_y)
+                zufaellig_x = rd.randint(0, begrenzung_x-1)
+                zufaellig_y = rd.randint(0, begrenzung_y-1)
             felder[zufaellig_x][zufaellig_y] = Futterquelle(zufaellig_x,zufaellig_y,True,farbe_futterquelle,self.karte)  # hier wird das Feld durch die Futterquelle ersetzt
 
         self.karte.delete(felder[self.nest.x][self.nest.y].grafik)
@@ -104,6 +104,6 @@ class Karte:
         if feld.y != self.nest.y:
             if feld.y > self.nest.y:
                 felder_naeher_nest.append(self.felder[feld.x][feld.y - 1])
-            if feld.x < self.nest.x:
+            if feld.x < self.nest.y:
                 felder_naeher_nest.append(self.felder[feld.x][feld.y + 1])
         return felder_naeher_nest

@@ -11,10 +11,10 @@ def __main__():
     ameisenliste = []  # Die Liste in der alle Ameisenobjekte vermerkt sind um jederzeit abrufbar zu sein
     nestposition_x = 249  # die variablen Nestkoordinaten
     nestposition_y = 250
-    futterquellen_anzahl = 4  # die variable Futterquellenanzahl
+    futterquellen_anzahl = 500  # die variable Futterquellenanzahl
     spielfeld = Karte.Karte(nestposition_x, nestposition_y,
                             futterquellen_anzahl,tk)  # Das spielfeld auf dem sich die Ameisen bewegen
-    ameisenzahl = 100  # die variable Ameisenanzahl
+    ameisenzahl = 300  # die variable Ameisenanzahl
     ameisenliste_fuellen(spielfeld, ameisenliste,
                       ameisenzahl)  # Hier wird die Funktion aufgerufen, welche di Ameisen erstellt
     verdunstungszeit = 5  # die verdunstungszeit gibt an wie viele Runden benötigt werden um einen Pheromonpunkt abzubauen
@@ -43,7 +43,7 @@ def bewege(spielfeld, ameisen):
                     pheromon_felder.append(moegliches_feld)
                 elif moegliches_feld.pheromone == pheromon_felder[0].pheromone:
                     pheromon_felder.append(moegliches_feld)
-            moegliche_pheromonfelder = pheromon_felder
+            moegliche_pheromonfelder = list(pheromon_felder)
             for pheromon_feld in moegliche_pheromonfelder:
                 if pheromon_feld in felder_zu_nest and pheromon_feld.pheromone>0:
                     moegliche_pheromonfelder.remove(pheromon_feld)
@@ -59,18 +59,20 @@ def bewege(spielfeld, ameisen):
         elif ameise.futter is True:
             moegliche_felder = felder_zu_nest
             ameise_feld = rd.choice(moegliche_felder)
-            if type(ameise.feld) is Karte.Nest:
-                ameise.futter = False
-                spielfeld.nest.gesammeltes_futter += 1
+
         if ameise.futter is True:
             ameise.feld.pheromone += 1
         spielfeld.karte.move(ameise.grafik,3*(ameise_feld.x-ameise.feld.x),3*(ameise_feld.y-ameise.feld.y))
         ameise.feld=ameise_feld
+        if type(ameise.feld) is Karte.Nest and ameise.futter is True:
+                ameise.futter = False
+                spielfeld.nest.gesammeltes_futter += 1
 
 def pheromon_update(spielfeld, verdunstungszeit):
     for spalte in spielfeld.felder:
         for feld in spalte:
             if feld.pheromone > 0:
+                spielfeld.karte.itemconfigure(feld.grafik,fill="yellow")
                 feld.pheromone -= (1 / verdunstungszeit)
 
 
