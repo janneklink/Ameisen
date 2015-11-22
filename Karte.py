@@ -6,37 +6,49 @@ from tkinter import *
 # die Feld-Klasse, ein normales Feld in der Karte
 class Feld:
     def __init__(self, x, y, grafik, farbe, bild):
-        self.pheromone = 0  # die pheromone, denen die Ameisen nachlaufen
-        self.x = x  # die x und y koordinate des feldes im spielfeld
+        # die pheromone, denen die Ameisen nachlaufen
+        self.pheromone = 0
+        # die x und y koordinate des feldes im spielfeld
+        self.x = x
         self.y = y
+        #Hier werden die Koordinaten für die Grafik berechnet
         self.k = (self.x * 3 - 3, self.y * 3 - 3, self.x * 3, self.y * 3)
+        #die Farbe, die das Feld am Anfang hat damit es falls es pheromone hatte wieder seine farbe annehmen kann
+        self.farbe = farbe
+        #Hier wird eine Grafik erstellt, falls gewünscht, dies tue ich da ich für eine Funktion auch noch Felder erstelle
         if grafik is True:
-            self.grafik = bild.create_rectangle(self.k[0], self.k[1], self.k[2], self.k[3], fill=farbe)
+            self.grafik = bild.create_rectangle(self.k[0], self.k[1], self.k[2], self.k[3], fill=self.farbe)
 
 
 # die Futterquellen-Klasse, hier können die Ameisen Futter aufnehemen
 class Futterquelle:
-    def __init__(self, x, y,grafik, farbe, bild):
+    def __init__(self, x, y, farbe, bild):
         self.futter = 50
-        self.pheromone = 0  # die pheromone, denen die Ameisen nachlaufen
+        # die pheromone, denen die Ameisen nachlaufen
+        self.pheromone = 0
         self.x = x
         self.y = y
+        #Hier werden die Koordinaten für die Grafik berechnet
         self.k = (self.x * 3 - 3, self.y * 3 - 3, self.x * 3, self.y * 3)
-        if grafik is True:
-            self.grafik = bild.create_rectangle(self.k[0], self.k[1], self.k[2], self.k[3], fill=farbe)
+        #die Farbe, die das Feld am Anfang hat damit es falls es pheromone hatte wieder seine farbe annehmen kann
+        self.farbe=farbe
+        #Hier wird eine Grafik erstellt
+        self.grafik = bild.create_rectangle(self.k[0], self.k[1], self.k[2], self.k[3], fill=self.farbe)
 
 
 
 # die Nest-Klasse, die Speichert wie viel Futter bereits zum Nest gebracht wurde
 class Nest:
-    def __init__(self, x, y,grafik, farbe, bild):
+    def __init__(self, x, y, farbe, bild):
         self.gesammeltes_futter = 0
         self.x = x
         self.y = y
+        # die pheromone, denen die Ameisen nachlaufen
         self.pheromone = 0
+        #Hier werden die Koordinaten für die Grafik berechnet
         self.k = (self.x * 3 - 3, self.y * 3 - 3, self.x * 3, self.y * 3)
-        if grafik is True:
-            self.grafik = bild.create_rectangle(self.k[0], self.k[1], self.k[2], self.k[3], fill=farbe)
+        self.farbe=farbe#die Farbe, die das Feld am Anfang hat damit es falls es pheromone hatte wieder seine farbe annehmen kann
+        self.grafik = bild.create_rectangle(self.k[0], self.k[1], self.k[2], self.k[3], fill=self.farbe)#Hier wird eine Grafik erstellt
 
 
 
@@ -46,7 +58,7 @@ class Karte:
 
         self.karte = Canvas(tk, width=1500, height=1500)
         self.karte.pack()
-        self.nest = Nest(nestposition_x, nestposition_y,True,"blue",self.karte)
+        self.nest = Nest(nestposition_x, nestposition_y,"blue",self.karte)
         self.felder = self.felder_erstellen(500, 500,futterquellen_anzahl)  # die felder bzw. das Spielfeld wird mit verschieden Parametern erstellt
 
     # Funktion, welche das Spielfeld erstellt
@@ -70,7 +82,7 @@ class Karte:
                     felder[zufaellig_x][zufaellig_y]) is Futterquelle:
                 zufaellig_x = rd.randint(0, begrenzung_x-1)
                 zufaellig_y = rd.randint(0, begrenzung_y-1)
-            felder[zufaellig_x][zufaellig_y] = Futterquelle(zufaellig_x,zufaellig_y,True,farbe_futterquelle,self.karte)  # hier wird das Feld durch die Futterquelle ersetzt
+            felder[zufaellig_x][zufaellig_y] = Futterquelle(zufaellig_x,zufaellig_y,farbe_futterquelle,self.karte)  # hier wird das Feld durch die Futterquelle ersetzt
 
         self.karte.delete(felder[self.nest.x][self.nest.y].grafik)
         felder[self.nest.x][
@@ -104,6 +116,6 @@ class Karte:
         if feld.y != self.nest.y:
             if feld.y > self.nest.y:
                 felder_naeher_nest.append(self.felder[feld.x][feld.y - 1])
-            if feld.x < self.nest.y:
+            if feld.y < self.nest.y:
                 felder_naeher_nest.append(self.felder[feld.x][feld.y + 1])
         return felder_naeher_nest
