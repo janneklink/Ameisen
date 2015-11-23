@@ -79,18 +79,17 @@ class Karte:
         # Jetzt werden bereits bestehende felder durch Futterquellen ersetzt
         for futterquelle in range(0, futterquellen_anzahl):
             # hier werden zufällige positionen innerhalb der Karte ausgewählt
-            zufaellig_x = rd.randint(0, begrenzung_x - 1)
-            zufaellig_y = rd.randint(0, begrenzung_y - 1)
+            zufaellig_x = rd.randint(0, begrenzung_x-1)
+            zufaellig_y = rd.randint(0, begrenzung_y-1)
             farbe_futterquelle = "red"
-            while zufaellig_x == self.nest.x and zufaellig_y == self.nest.y and type(
-                    # dies ist notwendig damit die Futterquelle nich auf eine bereits bestehende Futterquelle oder das Nest platziert wird
-                    felder[zufaellig_x][zufaellig_y]) is Futterquelle:
-                zufaellig_x = rd.randint(0, begrenzung_x - 1)
-                zufaellig_y = rd.randint(0, begrenzung_y - 1)
+            # dies ist notwendig damit die Futterquelle nich auf eine bereits bestehende Futterquelle oder das Nest platziert wird
+            while zufaellig_x == self.nest.x and zufaellig_y == self.nest.y and type(felder[zufaellig_x][zufaellig_y]) is Futterquelle:
+                zufaellig_x = rd.randint(0, begrenzung_x-1)
+                zufaellig_y = rd.randint(0, begrenzung_y-1)
             # hier wird das Feld durch die Futterquelle ersetzt
             felder[zufaellig_x][zufaellig_y] = Futterquelle(zufaellig_x, zufaellig_y, farbe_futterquelle, self.karte)
         self.karte.delete(felder[self.nest.x][self.nest.y].grafik)
-        # zuletzt wird noch das Feld an der Position des Nestes durch das Nest erstzt
+        # zuletzt wird noch das Feld an der Position des Nestes durch das Nest ersezt
         felder[self.nest.x][self.nest.y] = self.nest
 
         return felder
@@ -115,7 +114,7 @@ class Karte:
     # diese Funktion prüft ob sich ein Feld innerhalb der Karte befindet indem sie überprüft ob die Koordinaten innerhalb
     # der Grenzwerte liegen
     def pruefe_ob_feldinkarte(self, feld):
-        if feld.x < len(self.felder) and feld.x > -1 and feld.y < len(self.felder[1]) and feld.y > -1:
+        if feld.x < len(self.felder) and feld.x >=0 and feld.y < len(self.felder[1]) and feld.y >=0:
             return True
 
     # Hier werden die Felder, ausgehend von einem Feld, zurückgegeben, die näher am Nest liegen

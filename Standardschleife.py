@@ -44,6 +44,7 @@ def __main__():
         tk.update()
     # Zerstört das grafik-Fenster
     tk.destroy()
+    print ("Es wurde",spielfeld.nest.gesammeltes_futter,"Futter gesammelt.")
 
 
 # Die Funktion in der Jede Ameise einzeln bewegt wird
@@ -59,18 +60,16 @@ def bewege(spielfeld, ameisen):
             pheromon_felder = []
             # Hier werden die Felder mit den meisten Pheromonen aus den umliegenden Feldern herausgesucht
             for moegliches_feld in moegliche_felder:
-                if len(pheromon_felder) == 0:
-                    pheromon_felder.append(moegliches_feld)
-                elif moegliches_feld.pheromone > pheromon_felder[0].pheromone:
-                    for feld in pheromon_felder:
-                        pheromon_felder.remove(feld)
-                    pheromon_felder.append(moegliches_feld)
-                elif moegliches_feld.pheromone == pheromon_felder[0].pheromone:
-                    pheromon_felder.append(moegliches_feld)
-            # Nun werden aus den Pheromon feldern alle Felder, die zum Nest hingehen, entfernt
-            for pheromon_feld in pheromon_felder:
-                if pheromon_feld in felder_zu_nest and pheromon_feld.pheromone > 0:
-                    pheromon_felder.remove(pheromon_feld)
+                if moegliches_feld not in felder_zu_nest and moegliches_feld.pheromone>0:
+                    if len(pheromon_felder) == 0:
+                        pheromon_felder.append(moegliches_feld)
+                    elif moegliches_feld.pheromone > pheromon_felder[0].pheromone:
+                        for feld in pheromon_felder:
+                            pheromon_felder.remove(feld)
+                        pheromon_felder.append(moegliches_feld)
+                    elif moegliches_feld.pheromone == pheromon_felder[0].pheromone:
+                        pheromon_felder.append(moegliches_feld)
+
             # Wenn aber nun keine Felder mehr in der Liste sind
             if len(pheromon_felder) == 0:
                 # stehen nun durch diese zuweisung alle Spielfelder zur verfügung und
@@ -111,14 +110,19 @@ def pheromon_update(spielfeld, verdunstungszeit):
             # Wenn die Pheromon-Punkte eines Feldes höher als ein sind
             if feld.pheromone > 0:
                 # wird das Feld in der Visualisierung gelb
-                spielfeld.karte.itemconfigure(feld.grafik, fill="yellow")
+                if type(feld) is Karte.Feld:
+                    spielfeld.karte.itemconfigure(feld.grafik, fill="yellow")
+                elif type(feld) is Karte.Futterquelle:
+                    spielfeld.karte.itemconfigure(feld.grafik, fill="orange")
                 # und dem Feld werden Pheromone abgezogen
                 feld.pheromone -= (1 / verdunstungszeit)
                 # und wenn das Feld nun keine Pheromone mehr hat
                 if feld.pheromone <= 0:
                     # nimmt das Feld wieder die Farbe an die es hatte
                     spielfeld.karte.itemconfigure(feld.grafik, fill=feld.farbe)
-
+            if type(feld)is Karte.Futterquelle:
+                if feld.futter==0:
+                    feld.farbe="green"
 
 # die Funktion in der alle Ameisenobjekte erstellt werden
 def ameisenliste_fuellen(spielfeld, ameisenliste, ameisenanzahl):
